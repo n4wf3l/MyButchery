@@ -1,4 +1,5 @@
 // src/App.js
+
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import HomePage from "./pages/HomePage";
@@ -8,7 +9,8 @@ import ContactPage from "./pages/ContactPage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
-import AddButcherPage from "./pages/AddButcherPage";
+import AddButcherPage from "./pages/AddButcherPage"; // Import de la page AddButcherPage
+import ButcheryDetailPage from "./pages/ButcheryDetailPage"; // Import de la page ButcheryDetailPage
 import AuthService from "./services/authService";
 
 const App = () => {
@@ -25,11 +27,9 @@ const App = () => {
           {currentUser ? (
             <>
               {currentUser.user.role === "admin" && (
-                <>
-                  <Link to="/dashboard">Dashboard</Link>
-                  <span>Welcome, {currentUser.user.name}</span>
-                </>
+                <Link to="/dashboard">Dashboard</Link>
               )}
+              <span>Welcome, {currentUser.user.name}</span>
               <button onClick={AuthService.logout}>Logout</button>
             </>
           ) : (
@@ -39,9 +39,11 @@ const App = () => {
             </>
           )}
         </nav>
+
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/butcheries" element={<ButcheriesPage />} />
+          <Route path="/butcheries/:id" element={<ButcheryDetailPage />} />
           <Route path="/delivery" element={<DeliveryPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/register" element={<RegisterPage />} />

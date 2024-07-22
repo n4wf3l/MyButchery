@@ -1,6 +1,5 @@
 const Butcher = require("../models/Butcher");
 
-// Créer une nouvelle boucherie
 const createButcher = async (req, res) => {
   try {
     const {
@@ -19,7 +18,6 @@ const createButcher = async (req, res) => {
       chicken,
       lamb,
     } = req.body;
-
     const photo = req.file ? req.file.filename : null;
 
     const newButcher = new Butcher({
@@ -43,34 +41,30 @@ const createButcher = async (req, res) => {
     await newButcher.save();
     res.status(201).json(newButcher);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Obtenir la liste de toutes les boucheries
 const getButchers = async (req, res) => {
   try {
     const butchers = await Butcher.find();
     res.status(200).json(butchers);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Obtenir les détails d'une seule boucherie par son ID
 const getButcher = async (req, res) => {
   try {
-    const butcher = await Butcher.findById(req.params.id);
-    if (!butcher) {
+    const butchery = await Butcher.findById(req.params.id);
+    if (!butchery)
       return res.status(404).json({ message: "Butchery not found" });
-    }
-    res.status(200).json(butcher);
+    res.status(200).json(butchery);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Mettre à jour une boucherie par son ID
 const updateButcher = async (req, res) => {
   try {
     const {
@@ -89,8 +83,7 @@ const updateButcher = async (req, res) => {
       chicken,
       lamb,
     } = req.body;
-
-    const photo = req.file ? req.file.filename : req.body.photo;
+    const photo = req.file ? req.file.filename : null;
 
     const updatedButcher = await Butcher.findByIdAndUpdate(
       req.params.id,
@@ -114,26 +107,22 @@ const updateButcher = async (req, res) => {
       { new: true }
     );
 
-    if (!updatedButcher) {
+    if (!updatedButcher)
       return res.status(404).json({ message: "Butchery not found" });
-    }
-
     res.status(200).json(updatedButcher);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Supprimer une boucherie par son ID
 const deleteButcher = async (req, res) => {
   try {
     const deletedButcher = await Butcher.findByIdAndDelete(req.params.id);
-    if (!deletedButcher) {
+    if (!deletedButcher)
       return res.status(404).json({ message: "Butchery not found" });
-    }
-    res.status(200).json({ message: "Butchery deleted successfully" });
+    res.status(200).json({ message: "Butchery deleted" });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 

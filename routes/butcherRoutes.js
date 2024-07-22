@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
 const {
   createButcher,
   getButchers,
@@ -9,14 +8,16 @@ const {
   deleteButcher,
 } = require("../controllers/butcherController");
 const authMiddleware = require("../middleware/authMiddleware");
+const multer = require("multer");
+const path = require("path");
 
-// Configuration de multer pour le téléchargement des fichiers
+// Configuration de multer pour le téléchargement de fichiers
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/");
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname);
+    cb(null, Date.now() + path.extname(file.originalname));
   },
 });
 
